@@ -40,10 +40,6 @@ def load_vgg(sess, vgg_path):
     layer4_out = graph.get_tensor_by_name(vgg_layer4_out_tensor_name)
     layer7_out = graph.get_tensor_by_name(vgg_layer7_out_tensor_name)
 
-    tf.stop_gradient(layer3_out)
-    tf.stop_gradient(layer4_out)
-    tf.stop_gradient(layer7_out)
-    
     return input_layer, keep_prob, layer3_out, layer4_out, layer7_out
 
 tests.test_load_vgg(load_vgg, tf)
@@ -68,6 +64,7 @@ def layers(vgg_layer3_out, vgg_layer4_out, vgg_layer7_out, num_classes):
     The encoder for FCN-8 is the VGG16 model pretrained on ImageNet for classification.
     The fully-connected layers are replaced by 1-by-1 convolutions
     """
+
     c1_1x1_layer7 = conv_1x1(vgg_layer7_out, num_classes)
 
     c1_1x1_layer4 = conv_1x1(vgg_layer4_out, num_classes)
@@ -133,14 +130,15 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
     :param learning_rate: TF Placeholder for learning rate
     """
 
+    print()
     for epoch in range(epochs):
         sum_loss = 0
         for images, labels in get_batches_fn(batch_size):
             _, loss = sess.run([train_op, cross_entropy_loss],
-                     feed_dict={input_image: images, correct_label: labels, keep_prob: 0.8, learning_rate: 0.001})
+                     feed_dict={input_image: images, correct_label: labels, keep_prob: 0.5, learning_rate: 0.001})
             sum_loss = sum_loss + loss
 
-        print('Epoch {0} cross entropy: {1}'.format(epoch, sum_loss/batch_size), end="\r")
+        print('\rEpoch {0} cross entropy: {1}'.format(epoch, sum_loss/batch_size), end="")
 
 tests.test_train_nn(train_nn)
 
@@ -185,15 +183,12 @@ def run():
 
         print("Training started")
 
-
-
-
         train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_loss, input_layer, correct_label, keep_prob, learning_rate)
 
         print("Training done!")
 
         # TODO: Save inference data using helper.save_inference_samples
-        #  helper.save_inference_samples(runs_dir, data_dir, sess, image_shape, logits, keep_prob, input_image)
+        helper.save_inference_samples(runs_dir, data_dir, sess, image_shape, logits, keep_prob, input_layer)
 
         # OPTIONAL: Apply the trained model to a video
 
