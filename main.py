@@ -44,13 +44,18 @@ def load_vgg(sess, vgg_path):
 
 tests.test_load_vgg(load_vgg, tf)
 
+INITIALIZER = tf.contrib.layers.xavier_initializer()
+#tf.truncated_normal_initializer(stddev=0.01)
+REGULARIZER = tf.contrib.layers.l2_regularizer(1e-3)
+
+
 def conv_1x1(layer, num_classes):
     return tf.layers.conv2d(layer, num_classes, kernel_size=1, padding='same',
-                              kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3), kernel_initializer=tf.truncated_normal_initializer(stddev=0.01))
+                              kernel_regularizer=REGULARIZER, kernel_initializer=INITIALIZER)
 
 def upsample(layer, num_classes, size, stride):
     return tf.layers.conv2d_transpose(layer, num_classes, size, strides=stride, padding='same',
-                               kernel_regularizer=tf.contrib.layers.l2_regularizer(1e-3), kernel_initializer=tf.truncated_normal_initializer(stddev=0.01))
+                               kernel_regularizer=REGULARIZER, kernel_initializer=INITIALIZER)
 
 def layers(vgg_layer3_out, vgg_layer4_out, vgg_layer7_out, num_classes):
     """
