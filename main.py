@@ -44,8 +44,8 @@ def load_vgg(sess, vgg_path):
 
 tests.test_load_vgg(load_vgg, tf)
 
-INITIALIZER = tf.contrib.layers.xavier_initializer()
-#tf.truncated_normal_initializer(stddev=0.01)
+#INITIALIZER = tf.contrib.layers.xavier_initializer()
+INITIALIZER = tf.truncated_normal_initializer(stddev=0.01)
 REGULARIZER = tf.contrib.layers.l2_regularizer(1e-3)
 
 
