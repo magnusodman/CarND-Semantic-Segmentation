@@ -64,12 +64,11 @@ def layers(vgg_layer3_out, vgg_layer4_out, vgg_layer7_out, num_classes):
     The encoder for FCN-8 is the VGG16 model pretrained on ImageNet for classification.
     The fully-connected layers are replaced by 1-by-1 convolutions
     """
+    c1_1x1_layer7 = conv_1x1(tf.stop_gradient(vgg_layer7_out), num_classes)
 
-    c1_1x1_layer7 = conv_1x1(vgg_layer7_out, num_classes)
+    c1_1x1_layer4 = conv_1x1(tf.stop_gradient(vgg_layer4_out), num_classes)
 
-    c1_1x1_layer4 = conv_1x1(vgg_layer4_out, num_classes)
-
-    c1_1x1_layer3 = conv_1x1(vgg_layer3_out, num_classes)
+    c1_1x1_layer3 = conv_1x1(tf.stop_gradient(vgg_layer3_out), num_classes)
 
 
     #Match layer sizes (upsample) and create skip layers
