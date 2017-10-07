@@ -183,7 +183,7 @@ def run():
         # TODO: Train NN using the train_nn function
 
         batch_size = 5
-        epochs = 5
+        epochs = 25
         sess.run(tf.global_variables_initializer())
 
         print("Training started")
