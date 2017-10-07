@@ -49,6 +49,8 @@ The network is trained for 25 epochs and the learning rate was set to 0.001.
 
 Results
 -------
-images/um_000038.png
-![alt text](file://images/um_000038.png "Result from inference")
+
+Here is an example of an inferences image:
+
+![alt text](https://raw.githubusercontent.com/magnusodman/CarND-Semantic-Segmentation/master/images/um_000076.png "Result from inference")
 
